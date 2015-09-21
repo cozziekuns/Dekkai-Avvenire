@@ -1,0 +1,5 @@
+# Ignore secret file
+secret.rb
+
+# Ignore quotes file
+scripts/quotes.txt
