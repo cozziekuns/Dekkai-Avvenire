@@ -2,7 +2,6 @@
 # encoding: utf-8
 
 require "twitter"
-require_relative "log"
 require_relative "dekkai"
 require_relative "secret"
 
@@ -32,31 +31,30 @@ dekkai = Dekkai.new(rest_client, stream_client)
 begin
   loop { dekkai.update }
 rescue Twitter::Error::InternalServerError
-  Log.write("Internal Error with Twitter's Server. Retrying in 600s...")
+  puts "Internal Error with Twitter's Server. Retrying in 600s..."
   sleep(600)
   retry
 rescue Twitter::Error::RequestTimeout
-  Log.write("Request Timeout. Retrying in 600s...")
+  puts "Request Timeout. Retrying in 600s..."
   sleep(600)
   retry
 rescue Twitter::Error::ServiceUnavailable
-  Log.write("Twitter Service unavailable. Retrying in 600s...")
+  puts "Twitter Service unavailable. Retrying in 600s..."
   sleep(600)
   retry
 rescue Twitter::Error::Unauthorized
-  Log.write("Bad authentication data (check secret.rb?)")
+  puts "Bad authentication data (check secret.rb?)"
 rescue Twitter::Error => e
-  Log.write("Unknown Twitter Error.")
-  Log.write("Message: " + e.message)
+  puts "Unknown Twitter Error."
+  puts "Message: " + e.message
   sleep(600)
   retry
 rescue Interrupt
-  Log.write("Connection to Dekkai was closed.")
+  puts "Connection to Dekkai was closed."
 rescue Exception => e
-  Log.write("Exception Class: " + e.class.to_s)
-  Log.write("Message: " + e.message)
-  Log.write("Backtrace: " + e.backtrace.join("\n"))
+  puts "Exception Class: " + e.class.to_s
+  puts "Message: " + e.message
+  puts "Backtrace: " + e.backtrace.join("\n")
 ensure
-  Log.close
   dekkai.exit_gracefully
 end

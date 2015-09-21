@@ -1,5 +1,8 @@
 # Ignore secret file
 secret.rb
 
+*.swp
+*.dat
+
 # Ignore quotes file
 scripts/quotes.txt

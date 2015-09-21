@@ -60,13 +60,18 @@ class Dekkai
     update_all_scripts
     sleep(1)
   end
+  
+  def update_all_scripts
+  end
 
   #----------------------------------------------------------------------------
   # * Stream Handlers
   #----------------------------------------------------------------------------
 
   def parse_received_tweet(tweet)
-    if tweet.split(" ").any? { |s| s == "@#{@rest_client.user.screen_name}" }
+    if tweet.text.split(" ").any? { |s| 
+      s == "@#{@rest_client.user.screen_name}" 
+    }
       update_mention(tweet)
     end
   end
@@ -85,6 +90,7 @@ class Dekkai
   def send_tweet(tweet, options={})
     begin
       @rest_client.update!(tweet.message, options)
+      puts "Sent Tweet: #{tweet.message}"
     rescue Twitter::Error::DuplicateStatus
       puts "Error: Status was a duplicate. Removing from tweet queue."
     end
@@ -92,13 +98,14 @@ class Dekkai
   end
 
   def reply_to_mention(mention, reply)
-    send_tweet(tweet, {:in_reply_to_status => mention})
+    send_tweet(reply, {:in_reply_to_status => mention})
     @replied_to_metion = true
   end
 
   def follow_user(user)
     begin
       @rest_client.follow([follower])
+      puts "Follow request sent to: #{follower.screen_name}"
     rescue Twitter::Error::Forbidden
       puts "Follow request already sent to #{follower}."
     end
@@ -127,14 +134,16 @@ class Dekkai
   #----------------------------------------------------------------------------
 
   def resolve_tweet(tweet)
+    tweet.sent = true
   end
 
   #----------------------------------------------------------------------------
   # * Helper Methods
   #----------------------------------------------------------------------------
 
-  def send_scheduled_tweets
+  def send_scheduled_tweets	  
     @tweet_queue.each { |tweet| send_tweet(tweet) if tweet.ready? }
+    @tweet_queue.reject! { |tweet| tweet.sent }
   end
 
   #----------------------------------------------------------------------------
@@ -142,7 +151,7 @@ class Dekkai
   #----------------------------------------------------------------------------
 
   def exit_gracefully
-    @stream.join
+    @stream.kill
   end
 
 end
