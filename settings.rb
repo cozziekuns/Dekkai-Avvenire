@@ -14,7 +14,7 @@ module Settings
     "choose",
     "greetings",
     "followers",
-    "markov",
+    # "markov",
   ]
 
 end

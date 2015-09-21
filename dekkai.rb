@@ -98,7 +98,7 @@ class Dekkai
 
   def reply_to_mention(mention, reply)
     send_tweet(reply, {:in_reply_to_status => mention})
-    @replied_to_metion = true
+    @replied_to_mention = true
   end
 
   def follow_user(user)

@@ -30,10 +30,8 @@ class Dekkai
     backref = mention.text.match(/!choose\s(.+)\Z/i)
     return if not backref
     choices = (backref[1].gsub(/,([^\s])/) { ", #{$1}" }).split(", ")
-    p "get choices"
     reply = sprintf(Choose::Choose_Text, mention.user.screen_name,
         choices.sample)
-    p "reply to mention"
     tweet = Tweet.new(Time.now + 1, :standard, reply)
     reply_to_mention(mention, tweet)
   end
