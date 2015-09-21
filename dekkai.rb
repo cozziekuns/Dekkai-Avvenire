@@ -20,6 +20,7 @@ class Dekkai
   def initialize(rest_client, stream_client)
     @rest_client = rest_client
     @stream_client = stream_client
+    @screen_name = @rest_client.user.screen_name
     @tweet_queue = []
     create_tweet_stream
     load_scripts
@@ -69,9 +70,7 @@ class Dekkai
   #----------------------------------------------------------------------------
 
   def parse_received_tweet(tweet)
-    if tweet.text.split(" ").any? { |s| 
-      s == "@#{@rest_client.user.screen_name}" 
-    }
+    if tweet.text.split(" ").any? { |s| s == "@#{@screen_name}" }
       update_mention(tweet)
     end
   end

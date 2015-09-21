@@ -223,7 +223,7 @@ class Dekkai
 
   alias parse_received_tweet_markov parse_received_tweet
   def parse_received_tweet(tweet)
-    parse_received_tweet(tweet)
+    parse_received_tweet_markov(tweet)
     text = filter_links(strip_mentions(tweet.text))
     if english?(text)
       @markov_english.add_tweet(text)
@@ -238,7 +238,7 @@ class Dekkai
 
   alias update_mention_markov update_mention
   def update_mention(mention)
-    post_update_mention_markov(mention)
+    update_mention_markov(mention)
     return if @replied_to_mention
     chain = get_markov_chain(mention)
     name = mention.user.screen_name

@@ -10,11 +10,11 @@
 module Settings
 
   Enabled_Scripts =[
-    # "random",
+    "random",
     "choose",
-    # "greetings",
-    # "followers",
-    # "markov",
+    "greetings",
+    "followers",
+    "markov",
   ]
 
 end

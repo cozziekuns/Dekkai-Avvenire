@@ -47,6 +47,7 @@ rescue Twitter::Error::Unauthorized
 rescue Twitter::Error => e
   puts "Unknown Twitter Error."
   puts "Message: " + e.message
+  puts "Backtrace: " + e.backtrace.join("\n")
   sleep(600)
   retry
 rescue Interrupt
