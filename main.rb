@@ -50,6 +50,10 @@ rescue Twitter::Error => e
   puts "Backtrace: " + e.backtrace.join("\n")
   sleep(600)
   retry
+rescue EOFError => e
+  dekkai.exit_gracefully
+  dekkai = Dekkai.new(rest_client, stream_client)
+  retry
 rescue Interrupt
   puts "Connection to Dekkai was closed."
 rescue Exception => e

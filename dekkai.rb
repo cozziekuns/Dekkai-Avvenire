@@ -103,10 +103,10 @@ class Dekkai
 
   def follow_user(user)
     begin
-      @rest_client.follow([follower])
-      puts "Follow request sent to: #{follower.screen_name}"
+      @rest_client.follow([user])
+      puts "Follow request sent to: #{user.screen_name}"
     rescue Twitter::Error::Forbidden
-      puts "Follow request already sent to #{follower}."
+      puts "Follow request already sent to #{user}."
     end
   end
 
